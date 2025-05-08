@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سیستەمی بەڕێوەبردنی نەخۆشخانە</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-hospital"></i> سیستەمی بەڕێوەبردنی نەخۆشخانە</h1>
+        </header>
+        
+        <nav>
+            <ul>
+                <li class="active" data-tab="dashboard"><i class="fas fa-home"></i> سەرەکی</li>
+                <li data-tab="patients"><i class="fas fa-procedures"></i> نەخۆشەکان</li>
+                <li data-tab="add-patient"><i class="fas fa-user-plus"></i> نەخۆشی نوێ</li>
+                <li data-tab="expenses"><i class="fas fa-money-bill-wave"></i> خەرجیەکان</li>
+                <li data-tab="reports"><i class="fas fa-chart-bar"></i> ڕاپۆرتەکان</li>
+            </ul>
+        </nav>
+        
+        <main>
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <h2><i class="fas fa-tachometer-alt"></i> داشبۆرد</h2>
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3>ژمارەی نەخۆشەکان</h3>
+                        <p id="total-patients">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>کۆی خەرجی</h3>
+                        <p id="total-expenses">0 دینار</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>نەخۆشی ئەمڕۆ</h3>
+                        <p id="today-patients">0</p>
+                    </div>
+                </div>
+                
+                <div class="recent-activity">
+                    <h3><i class="fas fa-history"></i> چالاکیەکانی دوایی</h3>
+                    <ul id="activity-list">
+                        <!-- Activities will be added here by JavaScript -->
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Patients Tab -->
+            <div id="patients" class="tab-content">
+                <h2><i class="fas fa-procedures"></i> لیستی نەخۆشەکان</h2>
+                <div class="search-bar">
+                    <input type="text" id="patient-search" placeholder="گەڕان بە ناو یان ژمارەی نەخۆش...">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ژمارەی نەخۆش</th>
+                            <th>ناو</th>
+                            <th>تەمەن</th>
+                            <th>جێندەر</th>
+                            <th>نەخۆشی</th>
+                            <th>بەرواری چوونە نەخۆشخانە</th>
+                            <th>کردارەکان</th>
+                        </tr>
+                    </thead>
+                    <tbody id="patients-table">
+                        <!-- Patients will be added here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Add Patient Tab -->
+            <div id="add-patient" class="tab-content">
+                <h2><i class="fas fa-user-plus"></i> تۆمارکردنی نەخۆشی نوێ</h2>
+                <form id="patient-form">
+                    <div class="form-group">
+                        <label for="name">ناوی تەواو:</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="age">تەمەن:</label>
+                            <input type="number" id="age" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="gender">جێندەر:</label>
+                            <select id="gender" required>
+                                <option value="">هەڵبژاردن</option>
+                                <option value="نێر">نێر</option>
+                                <option value="مێ">مێ</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">ناونیشان:</label>
+                        <input type="text" id="address">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">ژمارەی مۆبایل:</label>
+                        <input type="tel" id="phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="disease">نەخۆشی:</label>
+                        <input type="text" id="disease" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="admission-date">بەرواری چوونە نەخۆشخانە:</label>
+                        <input type="date" id="admission-date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes">تێبینی:</label>
+                        <textarea id="notes" rows="3"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> تۆمارکردن</button>
+                </form>
+            </div>
+            
+            <!-- Expenses Tab -->
+            <div id="expenses" class="tab-content">
+                <h2><i class="fas fa-money-bill-wave"></i> بەڕێوەبردنی خەرجیەکان</h2>
+                
+                <div class="expense-controls">
+                    <button id="add-expense-btn"><i class="fas fa-plus"></i> خەرجی نوێ</button>
+                </div>
+                
+                <div id="expense-form-container" class="hidden">
+                    <form id="expense-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="expense-date">بەروار:</label>
+                                <input type="date" id="expense-date" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="expense-amount">بڕی خەرجی (دینار):</label>
+                                <input type="number" id="expense-amount" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="expense-category">بەش:</label>
+                            <select id="expense-category" required>
+                                <option value="">هەڵبژاردن</option>
+                                <option value="دەرمان">دەرمان</option>
+                                <option value="ئامێرە پزیشکییەکان">ئامێرە پزیشکییەکان</option>
+                                <option value="مووچە">مووچە</option>
+                                <option value="خەرجییەکانی بینا">خەرجییەکانی بینا</option>
+                                <option value="ئەویتر">ئەویتر</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="expense-description">پێناسە:</label>
+                            <textarea id="expense-description" rows="2" required></textarea>
+                        </div>
+                        
+                        <div class="form-buttons">
+                            <button type="submit" class="submit-btn"><i class="fas fa-save"></i> تۆمارکردن</button>
+                            <button type="button" id="cancel-expense-btn" class="cancel-btn"><i class="fas fa-times"></i> پاشگەزبوونەوە</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>بەروار</th>
+                            <th>بەش</th>
+                            <th>پێناسە</th>
+                            <th>بڕ</th>
+                            <th>کردارەکان</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expenses-table">
+                        <!-- Expenses will be added here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Reports Tab -->
+            <div id="reports" class="tab-content">
+                <h2><i class="fas fa-chart-bar"></i> ڕاپۆرتەکان</h2>
+                
+                <div class="report-filters">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="report-type">جۆری ڕاپۆرت:</label>
+                            <select id="report-type">
+                                <option value="patients">نەخۆشەکان</option>
+                                <option value="expenses">خەرجیەکان</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="time-period">ماوەی کات:</label>
+                            <select id="time-period">
+                                <option value="today">ئەمڕۆ</option>
+                                <option value="week">ئەم هەفتەیە</option>
+                                <option value="month">ئەم مانگە</option>
+                                <option value="year">ئەم ساڵە</option>
+                                <option value="all">هەموو کات</option>
+                                <option value="custom">کاتی دیاریکراو</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group hidden" id="custom-date-group">
+                            <label for="custom-date">بەرواری دیاریکراو:</label>
+                            <input type="date" id="custom-date">
+                        </div>
+                    </div>
+                    
+                    <button id="generate-report-btn"><i class="fas fa-filter"></i> نیشاندان</button>
+                </div>
+                
+                <div class="report-results">
+                    <div id="patients-report">
+                        <h3>ڕاپۆرتی نەخۆشەکان</h3>
+                        <div class="chart-container">
+                            <canvas id="patients-chart"></canvas>
+                        </div>
+                        <div id="patients-stats"></div>
+                    </div>
+                    
+                    <div id="expenses-report" class="hidden">
+                        <h3>ڕاپۆرتی خەرجیەکان</h3>
+                        <div class="chart-container">
+                            <canvas id="expenses-chart"></canvas>
+                        </div>
+                        <div id="expenses-stats"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Patient Details Modal -->
+        <div id="patient-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2 id="modal-title">زانیاری نەخۆش</h2>
+                <div id="patient-details">
+                    <!-- Patient details will be added here by JavaScript -->
+                </div>
+                <div class="modal-buttons">
+                    <button id="add-expense-for-patient" class="action-btn"><i class="fas fa-money-bill-wave"></i> خەرجی نوێ</button>
+                    <button id="edit-patient" class="action-btn"><i class="fas fa-edit"></i> گۆڕانکاری</button>
+                    <button id="delete-patient" class="delete-btn"><i class="fas fa-trash"></i> سڕینەوە</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
